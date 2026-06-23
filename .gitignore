@@ -1,0 +1,25 @@
+# Python & System Defaults
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+Thumbs.db
+
+# Environments & IDEs
+.env
+.venv/
+env/
+venv/
+.vscode/
+.idea/
+workspace/
+
+# Project Specific: Generated Data & Artifacts
+data/processed/
+data/synthetic/
+
+results/
+
+*.log
+experiment.log
+data/

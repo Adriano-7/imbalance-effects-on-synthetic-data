@@ -1,0 +1,21 @@
+[project]
+name = "impact-of-imbalance-on-tabular-data"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.10.*"
+dependencies = [
+    "imbalanced-learn>=0.14.1",
+    "ipykernel>=7.2.0",
+    "ipywidgets>=8.1.8",
+    "jupyter>=1.1.1",
+    "opacus==1.4.0",
+    "pandas>=2.3.3",
+    "plotly>=6.7.0",
+    "problexity>=0.5.11",
+    "pymdma>=0.2.2",
+    "seaborn>=0.13.2",
+    "synthcity>=0.2.12",
+    "tqdm>=4.67.3",
+    "ucimlrepo>=0.0.7",
+]

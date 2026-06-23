@@ -1,0 +1,35 @@
+# Dataset Registry
+# This file defines all available datasets for the experiments
+# Each dataset must follow the convention of having train_*_ir_*_rep*.csv files and test.csv
+
+datasets:
+  mammographic_mass:
+    name: mammographic_mass
+    description: Mammographic mass dataset for breast cancer detection (binary classification - benign/malignant)
+    target_column: Severity
+    processed_path: data/processed/mammographic_mass
+    results_path: results/mammographic_mass
+  monks:
+    name: monks
+    description: MONK's Problem 1 dataset for classification
+    target_column: "'class'"
+    processed_path: data/processed/monks
+    results_path: results/monks
+  vote:
+    name: vote
+    description: Congressional Voting Records Dataset for party affiliation prediction
+    target_column: target
+    processed_path: data/processed/vote
+    results_path: results/vote
+  phishing:
+    name: phishing
+    description: Phishing Websites detection dataset
+    target_column: target
+    processed_path: data/processed/phishing
+    results_path: results/phishing
+  credit:
+    name: credit
+    description: Credit card approval dataset (UCI) - binary classification with mixed features
+    target_column: target
+    processed_path: data/processed/credit
+    results_path: results/credit
