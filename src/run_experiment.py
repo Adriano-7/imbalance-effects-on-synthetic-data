@@ -19,6 +19,8 @@ from sklearn.metrics import classification_report, roc_auc_score
 from synthcity.plugins import Plugins
 from synthcity.plugins.core.dataloader import GenericDataLoader
 
+from imblearn.over_sampling import SMOTE
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config.config import get_config, get_dataset_config, list_available_datasets
@@ -148,9 +150,55 @@ def train_and_evaluate_classifier(train_df: pd.DataFrame, test_df: pd.DataFrame)
 def run_single_experiment(train_path: Path, test_path: Path, generator_name: str, strategy: str):
     train_df, test_df = load_data(train_path, test_path)
     dataset_info = extract_dataset_info(train_path.name)
+    k_neighbors = None
 
     if generator_name.lower() == 'baseline':
         results = train_and_evaluate_classifier(train_df, test_df)
+
+    elif generator_name.lower() == 'smote':
+        X_train = train_df.drop(columns=[TARGET_FEATURE])
+        y_train = train_df[TARGET_FEATURE]
+
+        n_original = X_train.shape[0]
+
+        class_counts = y_train.value_counts()
+        n_minority = int(class_counts.min())
+        k_neighbors = min(5, n_minority - 1)
+
+        total_size = len(train_df)
+        n_per_class = total_size // 2
+
+        ## to replace completely the original data and have the same size as control
+        sampling_strategy = {
+            int(cls): int(class_counts[cls]) + n_per_class
+            for cls in class_counts.index
+        }
+
+        smote = SMOTE(
+            sampling_strategy=sampling_strategy,
+            random_state=42,
+            k_neighbors=k_neighbors
+        )
+        X_res, y_res = smote.fit_resample(X_train, y_train)
+
+        assert pd.DataFrame(X_res[:n_original], columns=X_train.columns).equals(X_train.reset_index(drop=True)), "Originals were modified!"
+
+        X_resampled = X_res[n_original:]
+        y_resampled = y_res[n_original:]
+
+        X_orig_set = set(map(tuple, X_train.values))
+        duplicates = sum(1 for row in X_resampled if tuple(row) in X_orig_set)
+        if duplicates > 0:
+            print(f"[SMOTE] Warning!! {duplicates} synthetic points exactly match original rows.")
+
+        balanced_train_df = pd.DataFrame(X_resampled, columns=X_train.columns)
+        balanced_train_df[TARGET_FEATURE] = y_resampled
+
+        synth_filename = f"{train_path.stem}_synthetic_{generator_name}.csv"
+        balanced_train_df.to_csv(SYNTHETIC_PATH / synth_filename, index=False)
+
+        results = train_and_evaluate_classifier(balanced_train_df, test_df)
+
     else:
         loader = GenericDataLoader(train_df, target_column=TARGET_FEATURE)
         generator = Plugins().get(generator_name)
@@ -184,6 +232,7 @@ def run_single_experiment(train_path: Path, test_path: Path, generator_name: str
         "model": generator_name,
         "strategy": strategy,
         "train_set_size": len(train_df),
+        "k_neighbors": k_neighbors if generator_name.lower() == 'smote' else None,
         **results 
     }
     return result_log
