@@ -46,7 +46,7 @@ figs/          # paper figures
 ## Setup
 
 ```bash
-pip install synthcity pymdma scikit-learn pandas numpy pyyaml joblib psutil
+uv sync
 ```
 
 ## Usage
