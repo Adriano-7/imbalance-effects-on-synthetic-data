@@ -1,5 +1,5 @@
 [project]
-name = "impact-of-imbalance-on-tabular-data"
+name = "imbalance-effects-on-synthetic-data"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
