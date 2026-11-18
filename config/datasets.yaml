@@ -33,3 +33,9 @@ datasets:
     target_column: target
     processed_path: data/processed/credit
     results_path: results/credit
+  monica:
+    name: monica
+    description: WHO MONICA myocardial infarction outcomes (R package DAAG via Rdatasets) - binary classification (dead/live)
+    target_column: target
+    processed_path: data/processed/monica
+    results_path: results/monica

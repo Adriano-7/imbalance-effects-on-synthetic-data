@@ -24,7 +24,7 @@ sampled to produce balanced synthetic sets.
 | Generators | CTGAN, TVAE, RTVAE, DDPM, and SMOTE (used as a synthesiser) |
 | Generative library | [`synthcity`](https://github.com/vanderschaarlab/synthcity) |
 | Quality metrics | [`pymdma`](https://github.com/fraunhoferportugal/pymdma) |
-| Datasets | Mammographic Mass · Monks · Vote · Phishing · Credit · Auto Mpg |
+| Datasets | Mammographic Mass · Monks · Vote · Phishing · Credit · Auto Mpg · WHO MONICA |
 
 ## Repository structure
 
